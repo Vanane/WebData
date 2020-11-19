@@ -1,0 +1,16 @@
+<?xmlversion="1.0" encoding="UTF−8"?>
+<!DOCTYPE bilan−continents SYSTEM "info.dtd">
+
+<bilan−continents>
+	<xsl:apply-template select="/"/>
+
+
+	<xsl:template match="continent">
+		<continent>
+			<xsl:apply-templates match="month[]" />
+		</continent>
+	</xsl:template>
+
+
+</bilan−continents>
+
