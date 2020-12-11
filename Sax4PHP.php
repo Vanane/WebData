@@ -13,7 +13,19 @@
  * @copyright  (c) 2007 Emmanuel Desmontils
  * @link       http://sax4php.sourceforge.net/
  *
- *   This program is free software; you can redistribute it and/or * modify it under the terms of the GNU General Public License * as published by the Free Software Foundation; either version 2 * of the License, or (at your option) any later version. * *   This program is distributed in the hope that it will be useful, * but WITHOUT ANY WARRANTY; without even the implied warranty of * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the * GNU General Public License for more details. * *   You should have received a copy of the GNU General Public License * along with this program; if not, write to the Free Software * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *   This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  */
 
@@ -49,13 +61,13 @@ class DefaultHandler {
   
   //Java like functions to manage SAX events
   
-  //void startElement(String uri,String localName,String qName,Attributes atts) throws SAXException 
+  //void startElement(String uri,String localName,String qName,Attributes atts) throws SAXException 
   function startElement($name, $att) {}
   
-  //void endElement(String uri,String localName,String qName) throws SAXException
+  //void endElement(String uri,String localName,String qName) throws SAXException
   function endElement($name) {}
   
-  //void processingInstruction(String target, String data) throws SAXException
+  //void processingInstruction(String target, String data) throws SAXException
   function processingInstruction($target, $content) {}
   
   //Not a Java Method but usefull for SAX 2 :
@@ -66,8 +78,8 @@ class DefaultHandler {
   // * void endDTD() throws SAXException ?
   function node($data) {}
   
-  //void characters(char[] ch,int start,int length) throws SAXException
-  //void ignorableWhitespace(char[] ch, int start, int length) throws SAXException
+  //void characters(char[] ch,int start,int length) throws SAXException
+  //void ignorableWhitespace(char[] ch, int start, int length) throws SAXException
   //CDATA section (like in SAX 2):
   // * void startCDATA() throws SAXException
   // * void endCDATA() throws SAXException
@@ -121,13 +133,27 @@ private $saxHandler;
 	
 	function parse($xml) {
 		$this->saxHandler->startDocumentHandler($this->sax);
-		$error = ! xml_parse($this->sax,$xml,TRUE);
-		if ($error) {
-			throw new SAXException($this->sax,xml_error_string(xml_get_error_code($this->sax)), 
-			                                  xml_get_error_code($this->sax));
-		}
+
+    $fp = fopen($xml, "r");
+    while($fileContent = fread($fp, 1024*1024*5)) {
+        $error = !xml_parse($this->sax, $fileContent, feof($fp));
+        if ($error) {
+            throw new SAXException($this->sax,xml_error_string(xml_get_error_code($this->sax)), 
+                                        xml_get_error_code($this->sax));
+        }
+    }
 		$this->saxHandler->endDocumentHandler($this->sax);
 	}
+
+  function parseXML($xml) {
+    $this->saxHandler->startDocumentHandler($this->sax);
+    $error = ! xml_parse($this->sax,$xml,TRUE);
+    if ($error) {
+      throw new SAXException($this->sax,xml_error_string(xml_get_error_code($this->sax)), 
+                                        xml_get_error_code($this->sax));
+    }
+    $this->saxHandler->endDocumentHandler($this->sax);
+  }
 }
 
 /**
@@ -137,12 +163,20 @@ private $saxHandler;
  *
  * @access   public
  */
-class SAXException extends Exception {
+class SAXException extends Exception {
 	protected $lineNumber, $columnNumber;
-	  public function __construct($sax,$message = NULL, $code = 0) {
-  	if ($code == 0) $code = xml_get_error_code($sax);  	if ($message == NULL) $message = xml_error_string($code);
+	
+  public function __construct($sax,$message = NULL, $code = 0) {
+  	if ($code == 0) $code = xml_get_error_code($sax);
+  	if ($message == NULL) $message = xml_error_string($code);
     parent::__construct($message, $code);
     $this->lineNumber = xml_get_current_line_number($sax);
-    $this->columnNumber = xml_get_current_column_number($sax);  }  public function __toString() {    return __CLASS__ . " >> [{$this->code}]:". 
+    $this->columnNumber = xml_get_current_column_number($sax);
+  }
+
+  public function __toString() {
+    return __CLASS__ . " >> [{$this->code}]:". 
                        " {$this->message} at ".
-                       "{$this->lineNumber},{$this->columnNumber}\n";  }}?>
+                       "{$this->lineNumber},{$this->columnNumber}\n";
+  }
+}?>
