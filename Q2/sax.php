@@ -23,7 +23,6 @@ class CovidHandler extends DefaultHandler {
 			break;			
 			case "country":
 				$this->paysContinent[$att["xml:id"]] = $this->continentActuel;
-				echo $this->paysContinent[$att["xml:id"]]."\n";
 				$this->continents[$this->continentActuel]["population"] += $att["population"];
 				$this->continents[$this->continentActuel]["area"] += $att["area"];
 			break;
@@ -45,26 +44,29 @@ class CovidHandler extends DefaultHandler {
 }
 
 $file = "../covid-tp.xml";
+$output = "";
 try
 {	
     $nbl = new CovidHandler();
     $sax = new SaxParser($nbl);
 	$sax->parse($file);
 
-	echo <<<XML
+	$output = $output. <<<XML
 	<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE bilan-continents>\n<SYSTEM "info.dtd">
 	XML;
 
-	echo "\n<bilan-continents>";
+	$output = $output."\n<bilan-continents>";
 
 	foreach($nbl->continents as $p)
 	{
-		echo "\n<continent name='".$p["name"]."' population='".$p["population"]."' area='".$p["area"]."'>";
-		foreach($p["months"] as $mois)		
-		echo "\n\t<month no='".$mois["no"]."' cases=".$mois["cases"]." deaths=".$mois["deaths"]."/>";
+		$output = $output. "\n\t<continent name='".$p["name"]."' population='".$p["population"]."' area='".$p["area"]."'>";
+		$p["months"] = array_reverse($p["months"]);
+		foreach($p["months"] as $mois)
+		$output = $output."\n\t\t<month no='".$mois["no"]."' cases='".$mois["cases"]."' deaths='".$mois["deaths"]."'/>";
+			$output = $output."\n\t</continent>\n";
 	}
-	echo "\n</bilan-continents>";
-
+	$output = $output."</bilan-continents>\n";
+	file_put_contents("./outputsax.xml", $output);
 }
 catch(SAXException $e)
 {  
