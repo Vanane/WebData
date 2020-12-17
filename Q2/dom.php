@@ -73,7 +73,7 @@ foreach($continents as $p)
 
     foreach($p["months"] as $mois)
         $output = $output."\n\t\t<month no='".$mois["no"]."' cases='".$mois["cases"]."' deaths='".$mois["deaths"]."'/>";
-    $output = $output."\n\t</continent>\n";
+    $output = $output."\n\t</continent>";
 }
 
 $output = $output."</bilan-continents>\n";
