@@ -16,7 +16,6 @@
 		<month no='2020-10' cases='3004369' deaths='47999'/>
 		<month no='2020-11' cases='954814' deaths='16183'/>
 	</continent>
-
 	<continent name='Europe' population='766212338' area='23161302.84'>
 		<month no='2019-12' cases='0' deaths='0'/>
 		<month no='2020-01' cases='15' deaths='0'/>
@@ -31,7 +30,6 @@
 		<month no='2020-10' cases='4812004' deaths='42505'/>
 		<month no='2020-11' cases='2975928' deaths='39082'/>
 	</continent>
-
 	<continent name='Africa' population='1306903030' area='30334283'>
 		<month no='2019-12' cases='0' deaths='0'/>
 		<month no='2020-01' cases='0' deaths='0'/>
@@ -46,7 +44,6 @@
 		<month no='2020-10' cases='302274' deaths='7015'/>
 		<month no='2020-11' cases='128655' deaths='3259'/>
 	</continent>
-
 	<continent name='America' population='1013601796' area='41980106.3'>
 		<month no='2019-12' cases='0' deaths='0'/>
 		<month no='2020-01' cases='11' deaths='0'/>
@@ -61,7 +58,6 @@
 		<month no='2020-10' cases='3821622' deaths='83443'/>
 		<month no='2020-11' cases='1762451' deaths='25609'/>
 	</continent>
-
 	<continent name='Oceania' population='41467380' area='8508578.3'>
 		<month no='2019-12' cases='0' deaths='0'/>
 		<month no='2020-01' cases='7' deaths='0'/>
@@ -76,7 +72,6 @@
 		<month no='2020-10' cases='8564' deaths='79'/>
 		<month no='2020-11' cases='4547' deaths='32'/>
 	</continent>
-
 	<continent name='Other' population='0' area='0'>
 		<month no='2019-12' cases='0' deaths='0'/>
 		<month no='2020-01' cases='0' deaths='0'/>
@@ -90,5 +85,4 @@
 		<month no='2020-09' cases='0' deaths='0'/>
 		<month no='2020-10' cases='0' deaths='0'/>
 		<month no='2020-11' cases='0' deaths='0'/>
-	</continent>
-</bilan-continents>
+	</continent></bilan-continents>
